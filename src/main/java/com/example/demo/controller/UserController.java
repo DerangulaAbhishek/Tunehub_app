@@ -24,6 +24,8 @@ public class UserController {
             System.out.println("User email exists already");
         }
         return "home"; // Redirect to home page after registration
+        
+        
     }
 
     @PostMapping("/validate")
@@ -33,6 +35,7 @@ public class UserController {
             System.out.println("Invalid credentials for email: " + email);
             return "home"; // Redirect to home page if login is invalid
         }
+        //System.out.println();
         System.out.println("User validated successfully for email: " + email);
         return "login"; // Redirect to login page after successful validation
     }
