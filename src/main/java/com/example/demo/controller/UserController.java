@@ -31,9 +31,18 @@ public class UserController {
     @PostMapping("/validate")
     public String validateUser(@RequestParam("email") String email, @RequestParam("password") String password) {
         boolean isValid = service.validateUser(email, password);
-        if (!isValid) {
-            System.out.println("Invalid credentials for email: " + email);
-            return "home"; // Redirect to home page if login is invalid
+//        if (!isValid) {
+//            System.out.println("Invalid credentials for email: " + email);
+//            return "home"; // Redirect to home page if login is invalid
+//        }
+        if(service.validateUser(email, password)==true) {
+        	String role= service.getRole(email);
+        	if(role.equals("admin")) {
+        		return "adminHome";
+        	}
+        	else {
+        		return "customerHome";
+        	}
         }
         //System.out.println();
         System.out.println("User validated successfully for email: " + email);
