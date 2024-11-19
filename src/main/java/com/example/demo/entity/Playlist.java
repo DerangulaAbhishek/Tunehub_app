@@ -4,55 +4,59 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
-/**
- * 
- */
 @Entity
 public class Playlist {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	int id;
-	String username;
-	String email;
-	List<Song> Songs;
-	public Playlist() {
-		super();
-	}
-	public Playlist(int id, String username, String email, List<Song> songs) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.email = email;
-		Songs = songs;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public List<Song> getSongs() {
-		return Songs;
-	}
-	public void setSongs(List<Song> songs) {
-		Songs = songs;
-	}
-	@Override
-	public String toString() {
-		return "Playlist [id=" + id + ", username=" + username + ", email=" + email + ", Songs=" + Songs + "]";
-	}
-	
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
+    String name;
 
+    @ManyToMany
+    @JoinTable(
+        name = "playlist_song", // Join table name
+        joinColumns = @JoinColumn(name = "playlist_id"), // Playlist foreign key
+        inverseJoinColumns = @JoinColumn(name = "song_id") // Song foreign key
+    )
+    List<Song> songs;
+
+    public Playlist() {
+        super();
+    }
+
+    public Playlist(int id, String name, List<Song> songs) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.songs = songs;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(List<Song> songs) {
+        this.songs = songs;
+    }
+
+    @Override
+    public String toString() {
+        return "Playlist [id=" + id + ", name=" + name + ", songs=" + songs + "]";
+    }
 }
