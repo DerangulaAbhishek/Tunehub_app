@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,18 +20,26 @@ public class SongController {
 	
 	@PostMapping ("/addSong")
 	public String addSong(@ModelAttribute Song song) {
-		service.addSong(song);
+		boolean songStatus=service.songExist(song.getName());
+		if(songStatus == false) {
+			service.addSong(song);
+			System.out.println("Song added successfully");
+		}else {
+			System.out.println("Song exists already !");
+		}
 		return "adminHome";
 	}
 	
 	//To get All Songs 
 	
 	@GetMapping ("/viewSongs")
-	public String viewSongs() {
+	public String viewSongs(Model model) {
 		List<Song> songList= service.fetchAllSongs();
-		System.err.println(songList);
+		System.out.println(songList);
+		model.addAttribute("songs", songList);
 		
-		return "adminHome";
+		
+		return "displaySongs";
 	}
 
 }

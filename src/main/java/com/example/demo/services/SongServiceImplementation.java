@@ -21,5 +21,16 @@ public class SongServiceImplementation implements SongService {
 	public List<Song> fetchAllSongs() {
 		return repo.findAll();
 	}
-
+	@Override
+	public boolean songExist(String name) {
+		// TODO Auto-generated method stub
+		Song song=repo.findByName(name);
+		
+		if (song == null) {
+			return false;	
+		}else {
+			return true;
+		}
+	}
+	
 }

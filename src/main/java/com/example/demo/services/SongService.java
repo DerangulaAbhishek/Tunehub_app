@@ -9,4 +9,6 @@ public interface SongService {
 
 	public List<Song> fetchAllSongs();
 
+	public boolean songExist(String name);
+
 }

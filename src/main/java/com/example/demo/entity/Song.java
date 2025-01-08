@@ -15,7 +15,8 @@ public class Song {
     String genre;
     String link;
 
-    @ManyToMany(mappedBy = "songs") // Indicate the owning side in the Playlist entity
+ // Indicate the owning side in the Playlist entity
+    @ManyToMany(mappedBy = "songs") 
     List<Playlist> playlist;
 
     public Song() {
