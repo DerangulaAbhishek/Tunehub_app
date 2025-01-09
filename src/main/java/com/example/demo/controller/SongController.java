@@ -35,11 +35,25 @@ public class SongController {
 	@GetMapping ("/viewSongs")
 	public String viewSongs(Model model) {
 		List<Song> songList= service.fetchAllSongs();
-		System.out.println(songList);
 		model.addAttribute("songs", songList);
 		
 		
 		return "displaySongs";
+	}
+	
+	@GetMapping ("/playSongs")
+	public String playSongs(Model model) {
+		
+		boolean premiumUser=true;
+		if (premiumUser==false) {
+			List<Song> songList= service.fetchAllSongs();
+			model.addAttribute("songs", songList);
+			return "displaySongs";
+		}else {
+			return "makepayment";
+		}
+		
+		
 	}
 
 }
