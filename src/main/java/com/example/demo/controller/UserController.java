@@ -2,8 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Users;
 import com.example.demo.services.UsersService;
+
+import jakarta.servlet.http.HttpSession;
+
+import java.security.PublicKey;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,12 +35,14 @@ public class UserController {
     }
 
     @PostMapping("/validate")
-    public String validateUser(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public String validateUser(@RequestParam("email") String email, 
+    		@RequestParam("password") String password, HttpSession session) {
         boolean isValid = service.validateUser(email, password);
 //        if (!isValid) {
 //            System.out.println("Invalid credentials for email: " + email);
 //            return "home"; // Redirect to home page if login is invalid
 //        }
+        session.setAttribute("email", email);
         if(service.validateUser(email, password)==true) {
         	String role= service.getRole(email);
         	if(role.equals("admin")) {
@@ -47,5 +55,23 @@ public class UserController {
         //System.out.println();
         System.out.println("User validated successfully for email: " + email);
         return "login"; // Redirect to login page after successful validation
+        
+        }
+    @GetMapping("/pay")
+    public String pay(@RequestParam String email) {
+    	
+    	boolean paymentStatus=false;
+    	
+    	if(paymentStatus==true) {
+    		Users user=service.getUser(email);
+    		user.setPremium(true);
+        	service.updateUser(user);
+    	}
+    	return "login";
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+    	session.invalidate();
+    	return "login";
     }
 }
