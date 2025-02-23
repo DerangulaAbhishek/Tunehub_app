@@ -1,37 +1,127 @@
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<meta charset="ISO-8859-1">
-	<title>Insert title here</title>
-	<style type ="text/css">
-		iframe{
-		height:100px;
-		width:500px;
-		}
-	</style>
-	</head>
-	<body>
-		<table border>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Artist</th>
-					<th>Genre</th>
-					<th>Play</th>
-	 			</tr>
-			</thead>
-			<tbody>
-				<tr th:each="song:${songs}">
-					<td th:text="${song.name}"></td>
-					<td th:text="${song.artist}"></td>
-					<td th:text="${song.genre}"></td>
-					<td>
-					<audio controls>
-						<source th:src="${song.link}" type="audio/mpeg">
-					</audio>
-					</td>
-	 			</tr>			
-			</tbody>
-		</table>
-	</body>
-	</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="ISO-8859-1">
+<title>Song List</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #121212;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    table {
+        width: 90%;
+        max-width: 900px;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 12px;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: left;
+        transition: all 0.3s ease;
+    }
+
+    th {
+        background: rgba(0, 255, 0, 0.3);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: white;
+    }
+
+    th:hover {
+        background: rgba(0, 255, 0, 0.5);
+        transform: scale(1.05);
+    }
+
+    tr {
+        transition: all 0.3s ease;
+    }
+
+    tr:hover {
+        background: rgba(0, 255, 0, 0.2);
+        box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.3);
+        transform: scale(1.02);
+    }
+
+    /* Audio Controls */
+    audio {
+        height: 30px;
+        width: 250px;
+        border-radius: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    audio:hover {
+        transform: scale(1.05);
+    }
+
+    audio::-webkit-media-controls-panel {
+        background: rgba(0, 255, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    audio::-webkit-media-controls-current-time-display,
+    audio::-webkit-media-controls-time-remaining-display {
+        color: white;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+</head>
+<body>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Artist</th>
+            <th>Genre</th>
+            <th>Play</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="song:${songs}">
+            <td th:text="${song.name}"></td>
+            <td th:text="${song.artist}"></td>
+            <td th:text="${song.genre}"></td>
+            <td>
+                <audio controls>
+                    <source th:src="${song.link}" type="audio/mpeg">
+                </audio>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,19 +1,168 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Create New Playlist</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: white;
+    padding: 40px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+form {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header h1 {
+    color: #1DB954;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.playlist-name {
+    margin-bottom: 25px;
+}
+
+.playlist-name label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.playlist-name input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.playlist-name input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.5);
+}
+
+.songs-container {
+    margin-bottom: 25px;
+}
+
+.song-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.song-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.song-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #1DB954;
+    border-radius: 4px;
+    margin-right: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.song-item input[type="checkbox"]:checked {
+    background-color: #1DB954;
+}
+
+.song-item input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+}
+
+.song-item label {
+    cursor: pointer;
+    flex: 1;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #1DB954;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #1ed760;
+    transform: translateY(-2px);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+</style>
 </head>
 <body>
-<h1>Play List page </h1>
-	<form action="addPlaylist">
-	<label>Play List Name :</label>
-	<input type="text" name="name">
-	<br>
-	<div>
-	<input type="checkbox">
-	</div>
-	<input type="submit" value="ADD PLAYLIST">
-	</form>
+    <form action="addPlaylist" method="POST">
+        <div class="form-header">
+            <h1>Create New Playlist</h1>
+        </div>
+        
+        <div class="playlist-name">
+            <label>Playlist Name</label>
+            <input type="text" name="name" placeholder="Enter playlist name" required />
+        </div>
+        
+        <div class="songs-container">
+            <div class="song-item" th:each="song:${songs}">
+                <input type="checkbox" th:name="songs" th:value="${song.id}" th:id="${'song-' + song.id}" />
+                <label th:text="${song.name}" th:for="${'song-' + song.id}"></label>
+            </div>
+        </div>
+
+        <input type="submit" value="CREATE PLAYLIST" class="submit-btn" />
+    </form>
 </body>
 </html>

@@ -1,108 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>User Login</title>
 <style>
-/* Bordered form */
-form {
-  border: 3px solid #f1f1f1;
-  max-width: 400px;
-  margin: auto;
-}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-/* Full-width inputs */
-input[type=text], input[type=password], input[type=email] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-/* Set a style for all buttons */
-button, input[type=submit] {
-  background-color: #04AA6D;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
+    body {
+        background: #181818;
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-/* Add a hover effect for buttons */
-button:hover, input[type=submit]:hover {
-  opacity: 0.8;
-}
+    .login-container {
+        background: #000;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        text-align: center;
+        width: 350px;
+    }
 
-/* Extra style for the cancel button (red) */
-.cancelbtn {
-  background-color: #f44336;
-  color: white;
-  padding: 14px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
+    .login-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
 
-/* Center the avatar image inside this container */
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-}
+    .input-group {
+        margin: 15px 0;
+        text-align: left;
+    }
 
-/* Avatar image */
-img.avatar {
-  width: 40%;
-  border-radius: 50%;
-}
+    .input-group label {
+        display: block;
+        font-size: 14px;
+        color: #b3b3b3;
+        margin-bottom: 5px;
+    }
 
-/* Add padding to containers */
-.container {
-  padding: 16px;
-}
+    .input-group input {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        background: #222;
+        color: white;
+        font-size: 16px;
+        outline: none;
+        transition: 0.3s;
+    }
 
-/* The "Forgot password" text */
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
+    .input-group input:focus {
+        background: #333;
+        box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    }
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-    display: block;
-    float: none;
-  }
-  .cancelbtn {
-    width: 100%;
-  }
-}
+    .login-btn {
+        width: 100%;
+        padding: 12px;
+        background: #1DB954;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .login-btn:hover {
+        background: #17a247;
+        transform: scale(1.02);
+    }
+
+    .forgot-password {
+        display: block;
+        margin-top: 10px;
+        color: #b3b3b3;
+        font-size: 14px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .forgot-password:hover {
+        color: white;
+    }
+
+    .register-link {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .register-link a {
+        color: #1DB954;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 <body>
-  <h1 style="text-align: center;">User Login</h1>
-  <form action="/validate" method="post">
-    <div class="container">
-      <label for="email"><b>Email:</b></label>
-      <input type="email" placeholder="Enter Email" name="email" required>
-      
-      <label for="password"><b>Password:</b></label>
-      <input type="password" placeholder="Enter Password" name="password" required>
-      
-      <input type="submit" value="LOGIN">
-
-      <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-      </label>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="validate" method="post">
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-btn">LOGIN</button>
+            <a href="#" class="forgot-password">Forgot password?</a>
+        </form>
+        <div class="register-link">
+            Don't have an account? <a href="/register">Sign up</a>
+        </div>
     </div>
-
-    <div class="container" style="background-color: #f1f1f1">
-      <button type="button" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
-  </form>
 </body>
 </html>
