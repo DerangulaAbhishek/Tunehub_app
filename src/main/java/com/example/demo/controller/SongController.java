@@ -44,8 +44,8 @@ public class SongController {
 	@GetMapping ("/playSongs")
 	public String playSongs(Model model) {
 		
-		boolean premiumUser=true;
-		if (premiumUser==false) {
+		boolean premiumUser=false;
+		if (premiumUser==true) {
 			List<Song> songList= service.fetchAllSongs();
 			model.addAttribute("songs", songList);
 			return "displaySongs";

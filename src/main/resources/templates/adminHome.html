@@ -2,11 +2,77 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin Home</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #121212;
+        color: white;
+        text-align: center;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    a {
+        display: block;
+        width: 250px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 12px;
+        margin: 10px 0;
+        color: white;
+        background: #1DB954;
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    a:hover {
+        background: #17a247;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+</style>
 </head>
 <body>
+
 <h1>Admin Home</h1>
+
 <a href="newSong"> Add a new song</a>
 <a href="viewSongs"> View all songs </a>
+<a href="createPlaylist"> Create Playlist</a>
+<a href="viewPlaylist"> View all Playlists</a>
+
 </body>
 </html>

@@ -17,10 +17,12 @@ public class Users {
 	String gender;
 	String role;
 	String address;
+	boolean isPremium;
 	public Users() {
 		super();
 	}
-	public Users(int id, String username, String email, String password, String gender, String role, String address) {
+	public Users(int id, String username, String email, String password, String gender, String role, String address,
+			boolean isPremium) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -29,6 +31,7 @@ public class Users {
 		this.gender = gender;
 		this.role = role;
 		this.address = address;
+		this.isPremium = isPremium;
 	}
 	public int getId() {
 		return id;
@@ -72,11 +75,19 @@ public class Users {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public boolean isPremium() {
+		return isPremium;
+	}
+	public void setPremium(boolean isPremium) {
+		this.isPremium = isPremium;
+	}
 	@Override
 	public String toString() {
 		return "Users [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
-				+ ", gender=" + gender + ", role=" + role + ", address=" + address + "]";
+				+ ", gender=" + gender + ", role=" + role + ", address=" + address + ", isPremium=" + isPremium + "]";
 	}
+	
+	
 	
 	
 }

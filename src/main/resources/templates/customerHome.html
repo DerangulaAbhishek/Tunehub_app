@@ -2,10 +2,133 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Customer Home</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #121212;
+        color: white;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    h1 {
+        color: #1DB954;
+        margin-bottom: 20px;
+    }
+
+    .non-premium {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px; /* Adds space between buttons */
+    }
+
+    a {
+        display: inline-block;
+        width: 200px;
+        padding: 12px 20px;
+        font-size: 18px;
+        font-weight: 600;
+        text-decoration: none;
+        text-align: center;
+        color: white;
+        background: #1DB954;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(29, 185, 84, 0.3);
+    }
+
+    a:hover {
+        background: #1ed760;
+        transform: scale(1.05);
+    }
+
+    a:active {
+        transform: scale(1);
+    }
+
+    .premium {
+        margin-top: 20px;
+        width: 80%;
+    }
+
+    table {
+        width: 100%;
+        margin: auto;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    th {
+        background: #1DB954;
+        color: black;
+        font-weight: 600;
+    }
+
+    tr:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transition: 0.3s;
+    }
+
+    audio {
+        outline: none;
+        filter: drop-shadow(0 0 5px #1DB954);
+    }
+</style>
 </head>
 <body>
-<h1>Customer Home</h1>
-<a href="playSongs"> Play Songs</a>
+    <h1>Customer Home</h1>
+    
+    <div th:unless="${isPremium}" class="non-premium">
+        <a href="pay"> Get Premium </a>
+        <a href="logout">Logout</a>
+    </div>
+
+    <div th:if="${isPremium}" class="premium">
+        <table border>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th>Play</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="song:${songs}">
+                    <td th:text="${song.name}"></td>
+                    <td th:text="${song.artist}"></td>
+                    <td th:text="${song.genre}"></td>
+                    <td>
+                        <audio controls>
+                            <source th:src="${song.link}" type="audio/mpeg">
+                        </audio>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
