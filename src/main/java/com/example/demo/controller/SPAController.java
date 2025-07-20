@@ -1,0 +1,15 @@
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+public class SPAController {
+	@Controller
+	public class RouteController {
+	    @RequestMapping(value = "/{path:[^\\.]*}")
+	    public String redirect() {
+	        return "forward:/";
+	    }
+	}
+
+}
