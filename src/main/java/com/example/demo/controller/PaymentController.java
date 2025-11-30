@@ -2,95 +2,131 @@ package com.example.demo.controller;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Users;
-import com.example.demo.services.UsersService;
+import com.example.demo.repository.UsersReporsitory;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
-import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
 
-import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
-@Controller
+@RestController
+@RequestMapping("/api/payment")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PaymentController {
 
+    private static final String RAZORPAY_KEY_ID = "rzp_test_RTyZoE0H5fz84x";
+    private static final String RAZORPAY_SECRET_KEY = "OzyT4tCw7pgFzsVQybMLg7b2";
+
     @Autowired
-    UsersService service;
+    private UsersReporsitory usersReporsitory;
 
-    private static final String RAZORPAY_KEY_ID = "rzp_test_H6tIcJ83WlS5V7";
-    private static final String RAZORPAY_SECRET_KEY = "StASXzfGXSkDLRdISBcsDYqa";
-
-    // Step 1: Create Order
+    // ------------------------------------------------------------
+    // ✅ 1️⃣ CREATE ORDER
+    // ------------------------------------------------------------
     @PostMapping("/createOrder")
-    @ResponseBody
-    public String createOrder() {
+    public Map<String, Object> createOrder(@RequestBody Map<String, Object> requestData) {
+        Map<String, Object> response = new HashMap<>();
+
         try {
             RazorpayClient razorpay = new RazorpayClient(RAZORPAY_KEY_ID, RAZORPAY_SECRET_KEY);
 
+            int amount = (int) requestData.get("amount");
+            String currency = (String) requestData.get("currency");
+
             JSONObject orderRequest = new JSONObject();
-            orderRequest.put("amount", 50000); // Amount in paise (₹500 = 50000 paise)
-            orderRequest.put("currency", "INR");
+            orderRequest.put("amount", amount);
+            orderRequest.put("currency", currency);
             orderRequest.put("receipt", "receipt#1");
+            orderRequest.put("payment_capture", 1);
 
             Order order = razorpay.orders.create(orderRequest);
-            return order.toString();
 
-        } catch (RazorpayException e) {
+            response.put("orderId", order.get("id"));
+            response.put("amount", order.get("amount"));
+            response.put("currency", order.get("currency"));
+            response.put("key", RAZORPAY_KEY_ID);
+
+        } catch (Exception e) {
             e.printStackTrace();
-            return "{\"error\":\"Order creation failed\"}";
+            response.put("error", "Order creation failed");
         }
+
+        return response;
     }
 
-    // Step 2: Verify Payment and Update Database
+    // ------------------------------------------------------------
+    // ✅ 2️⃣ VERIFY PAYMENT SIGNATURE
+    // ------------------------------------------------------------
     @PostMapping("/verify")
-    @ResponseBody
-    public boolean verifyPayment(@RequestParam String orderId, 
-                                 @RequestParam String paymentId,
-                                 @RequestParam String signature, 
-                                 HttpSession session) {
+    public Map<String, Object> verifyPayment(@RequestBody Map<String, Object> paymentData) {
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            // Step 2.1: Verify Payment Signature
-            String verificationData = orderId + "|" + paymentId;
-            boolean isValid = Utils.verifySignature(verificationData, signature, RAZORPAY_SECRET_KEY);
+            String orderId = (String) paymentData.get("razorpay_order_id");
+            String paymentId = (String) paymentData.get("razorpay_payment_id");
+            String signature = (String) paymentData.get("razorpay_signature");
+
+            String payload = orderId + "|" + paymentId;
+            boolean isValid = Utils.verifySignature(payload, signature, RAZORPAY_SECRET_KEY);
 
             if (isValid) {
-                // Step 2.2: Update User is_premium Status
-                String email = (String) session.getAttribute("email");
-                if (email != null) {
-                    Users user = service.getUser(email);
-                    if (user != null) {
-                        user.setPremium(true); // Set user as Premium
-                        service.updateUser(user);
-                    }
-                }
-
-                // Step 2.3: Redirect to Customer Home Page
-                return true;
+                response.put("status", "success");
+                response.put("message", "Payment verified successfully");
             } else {
-                return false; // Payment verification failed
+                response.put("status", "failed");
+                response.put("message", "Invalid payment signature");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            response.put("status", "error");
+            response.put("message", "Verification error");
         }
+
+        return response;
     }
 
-    @GetMapping("/payment-success")
-    public String paymentSuccess() {
-        return "redirect:/customerHome"; // Redirect to customer home page
-    }
+    // ------------------------------------------------------------
+    // ✅ 3️⃣ UPDATE PREMIUM (SAFE FIX)
+    // ------------------------------------------------------------
+    @PostMapping("/updatePremium")
+    public Map<String, Object> updatePremium(@RequestBody Map<String, Object> data) {
+        Map<String, Object> response = new HashMap<>();
 
-    @GetMapping("/payment-failure")
-    public String paymentFailure() {
-        return "login"; // Redirect to login page
-    }
+        try {
+            // Safe null check
+            Object idObj = data.get("userId");
+            if (idObj == null) {
+                response.put("status", "error");
+                response.put("message", "userId missing");
+                return response;
+            }
 
-    @GetMapping("/pay")
-    public String payPage() {
-        return "pay"; // Ensure you have "pay.html" in the templates folder
+            int userId = Integer.parseInt(idObj.toString());
+
+            Users user = usersReporsitory.findById(userId).orElse(null);
+            if (user == null) {
+                response.put("status", "error");
+                response.put("message", "User not found");
+                return response;
+            }
+
+            user.setPremium(true); // will store as 1 in DB
+            usersReporsitory.save(user);
+
+            response.put("status", "success");
+            response.put("message", "Premium activated successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", "error");
+            response.put("message", "Failed to update premium");
+        }
+
+        return response;
     }
 }

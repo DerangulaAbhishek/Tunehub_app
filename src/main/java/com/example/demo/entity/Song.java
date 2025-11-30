@@ -1,23 +1,24 @@
 package com.example.demo.entity;
 
 import java.util.List;
-
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore; // <-- add this
 
 @Entity
 public class Song {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
-    String name;
-    String artist;
-    String genre;
-    String link;
+    private int id;
+    private String name;
+    private String artist;
+    private String genre;
+    private String link;
 
- // Indicate the owning side in the Playlist entity
-    @ManyToMany(mappedBy = "songs") 
-    List<Playlist> playlist;
+    // Indicate the owning side in the Playlist entity
+    @ManyToMany(mappedBy = "songs", fetch = FetchType.LAZY) 
+    @JsonIgnore // <-- add this to prevent infinite recursion
+    private List<Playlist> playlist;
 
     public Song() {
         super();
@@ -83,7 +84,7 @@ public class Song {
 
     @Override
     public String toString() {
-        return "Song [id=" + id + ", name=" + name + ", artist=" + artist + ", genre=" + genre + ", link=" + link
-                + ", playlist=" + playlist +"]";
+        return "Song [id=" + id + ", name=" + name + ", artist=" + artist + ", genre=" + genre + ", link=" + link + "]";
+        // Removed playlist from toString() to avoid recursion
     }
 }

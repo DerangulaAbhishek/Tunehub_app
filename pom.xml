@@ -53,17 +53,14 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-		<!-- Spring Boot Security (if authentication is needed) -->
+		<!-- Spring Boot Security (if authentication is needed) 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		-->
 
 		<!-- Spring Boot Actuator (for monitoring) -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
 
 		<!-- Spring Boot DevTools (for development only) -->
 		<dependency>
@@ -89,6 +86,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>tunehub-0.0.1-SNAPSHOT</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

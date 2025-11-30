@@ -4,14 +4,15 @@ import com.example.demo.entity.Users;
 import com.example.demo.repository.UsersReporsitory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 @Service
 public class UsersServiceImplementation implements UsersService {
+
     @Autowired
-    UsersReporsitory repo;
+    private UsersReporsitory repo;
 
     @Override
     public String addUser(Users user) {
-        // Directly save the password without encryption
         repo.save(user);
         return "User added successfully!";
     }
@@ -24,10 +25,7 @@ public class UsersServiceImplementation implements UsersService {
     @Override
     public boolean validateUser(String email, String password) {
         Users user = repo.findByEmail(email);
-        if (user == null) {
-            return false; // Email not found
-        }
-        // Directly compare passwords (since we are not using encryption)
+        if (user == null) return false;
         return user.getPassword().equals(password);
     }
 
@@ -35,19 +33,18 @@ public class UsersServiceImplementation implements UsersService {
     public String getRole(String email) {
         Users user = repo.findByEmail(email);
         if (user == null) {
-            throw new IllegalArgumentException("User with email " + email + " not found.");
+            return "invalid";
         }
         return user.getRole();
     }
 
-	@Override
-	public Users getUser(String email) {
-		 return repo.findByEmail(email);
-		
-	}
+    @Override
+    public Users getUser(String email) {
+        return repo.findByEmail(email);
+    }
 
-	@Override
-	public void updateUser(Users users) {
-		repo.save(users);
-	}
+    @Override
+    public void updateUser(Users users) {
+        repo.save(users);
+    }
 }
